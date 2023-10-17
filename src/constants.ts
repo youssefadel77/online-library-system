@@ -1,4 +1,4 @@
 export const appConstants = {
-  port: 3100,
+  port: 3000,
   jwtSecret: 'secretKey',
 };

@@ -13,7 +13,7 @@ import { BookModule } from './book/book.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'postgres',
       port: 5432,
       password: 'mypassword',
       username: 'myuser',
