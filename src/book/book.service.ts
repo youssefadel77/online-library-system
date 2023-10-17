@@ -25,6 +25,16 @@ export class BookService {
 
   async findAll(filters: FilterBooksDto) {
     const query = this.bookRepository.createQueryBuilder('book');
+    this.applyBookFilters(query, filters);
+    const [items, total] = await query
+      .skip((filters.page - 1) * filters.limit)
+      .take(filters.limit)
+      .getManyAndCount();
+
+    return { items, total };
+  }
+
+  private applyBookFilters(query, filters: FilterBooksDto) {
     if (filters.priceRange) {
       const [minPrice, maxPrice] = filters.priceRange.split(',').map(Number);
       if (minPrice) {
@@ -43,16 +53,17 @@ export class BookService {
           minReleaseDate,
         });
       }
-
       if (maxReleaseDate) {
         query.andWhere('book.releaseDate <= :maxReleaseDate', {
           maxReleaseDate,
         });
       }
     }
+
     if (filters.title) {
       query.andWhere('book.title LIKE :title', { title: `%${filters.title}%` });
     }
+
     if (filters.category) {
       query.andWhere('book.category LIKE :category', {
         category: `%${filters.category}%`,
@@ -60,14 +71,10 @@ export class BookService {
     }
     if (filters.authors) {
       const authorsList = filters.authors.split(',').map(Number);
-      if (authorsList) {
+      if (authorsList.length > 0) {
         query.andWhere('book.authorId IN (:...authorsList)', { authorsList });
       }
     }
-    const total = await query.getCount();
-    const skip = (filters.page - 1) * filters.limit;
-    const items = await query.skip(skip).take(filters.limit).getMany();
-    return { items, total };
   }
 
   async update(id: number, data: UpdateBookDto) {

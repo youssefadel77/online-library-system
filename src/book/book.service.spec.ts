@@ -87,10 +87,9 @@ describe('BookService', () => {
       // Mock the behavior of the query builder methods
       createQueryBuilderSpy.mockReturnValueOnce({
         andWhere: jest.fn().mockReturnThis(),
-        getCount: jest.fn().mockResolvedValue(totalCount),
         skip: jest.fn().mockReturnThis(),
         take: jest.fn().mockReturnThis(),
-        getMany: jest.fn().mockResolvedValue(mockBooks),
+        getManyAndCount: jest.fn().mockResolvedValue([mockBooks, totalCount]),
       } as any);
 
       const result = await service.findAll(filters);
