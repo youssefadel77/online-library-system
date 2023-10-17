@@ -9,7 +9,7 @@ Design and implement the backend for an online booking system for libraries.
 1. git clone the repo `$ git@github.com:youssefadel77/online-library-system.git`
 2. Install docker and docker-compose in your machine
 3. Make sure that port 3000 is not used by another service
-4. To run the project `$ docker-compose up -d`
+4. To run the project `$ docker-compose up -d --build`
 4. All Apis are configured using swagger `http://localhost:3000/docs`
 
 ## Test
